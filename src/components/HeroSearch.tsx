@@ -99,7 +99,7 @@ export default function HeroSearch({
             For IIM Lucknow students, faculty &amp; MDP guests
           </p>
           <h1 className="max-w-2xl text-4xl sm:text-5xl lg:text-[64px] font-semibold tracking-[-0.03em] leading-[1.02] text-white">
-            Pick a ride. We&apos;ll have it at the gate in 15&nbsp;minutes.
+            Pick a ride. We&apos;ll have it at the gate in 45&nbsp;minutes.
           </h1>
           <p className="mt-4 max-w-lg text-base sm:text-lg text-white/80 leading-relaxed">
             Scooters, bikes and cars from verified Lucknow vendors. Student rates, no ID kept, deposit back on UPI.

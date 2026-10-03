@@ -52,7 +52,7 @@ export default function CampusGuideSection() {
       <section id="campus-delivery" className="scroll-mt-24">
         <SectionHeading
           title="Four pickup points on campus"
-          subtitle="The vendor brings the vehicle to you, usually within 15 minutes of your slot."
+          subtitle="The vendor brings the vehicle to you, usually within 45 minutes of your slot."
         />
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 border-t border-line">
           {CAMPUS_LOCATIONS.map((loc, idx) => (

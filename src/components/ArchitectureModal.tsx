@@ -149,7 +149,7 @@ We deploy directly to Vercel via Git-triggered CI/CD with zero cold-starts."
                 <ul className="space-y-2 text-xs sm:text-sm">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                    <span><strong>Campus Doorstep Handover:</strong> Delivery within 15 minutes at Gate 1, Gate 2, or Hostel Quad.</span>
+                    <span><strong>Campus Doorstep Handover:</strong> Delivery within 45 minutes at Gate 1, Gate 2, or Hostel Quad.</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
