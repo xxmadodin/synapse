@@ -371,7 +371,7 @@ export const INITIAL_BOOKINGS: BookingRecord[] = [
 export const CAMPUS_STATS = [
   { label: "Active Student Riders", value: "850+" },
   { label: "Partner Fleet Vehicles", value: "35+" },
-  { label: "Campus Doorstep Time", value: "15 Mins" },
+  { label: "Campus Doorstep Time", value: "45 Mins" },
   { label: "Student Rating", value: "4.9 / 5.0" },
 ];
 
