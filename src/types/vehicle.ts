@@ -25,6 +25,7 @@ export interface Vehicle {
   subtitle: string;
   category: "scooter" | "bike" | "car";
   image: string;
+  imageFit?: "cover" | "contain";
   badge?: string;
   hourlyRate: number;
   dailyRate: number;

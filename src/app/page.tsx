@@ -21,16 +21,26 @@ import {
   BookingRecord,
   CampusLocation,
 } from "@/types/vehicle";
-import {
-  ShieldCheck,
-  Zap,
-  Sparkles,
-  Award,
-  CheckCircle2,
-  Clock,
-  ThumbsUp,
-  Headphones,
-} from "lucide-react";
+import Image from "next/image";
+
+const WHY_POINTS = [
+  {
+    title: "Your college ID stays in your wallet",
+    body: "Vendors check your licence and roll number on screen. Nobody holds on to your Aadhaar or ID card.",
+  },
+  {
+    title: "Delivered inside campus",
+    body: "Pick it up at Gate 1, Gate 2, the hostel quad or the MDP guest house. No auto ride to a stand on IIM Road.",
+  },
+  {
+    title: "Two clean helmets, every time",
+    body: "Every two-wheeler comes with sanitised ISI helmets for you and your pillion, free.",
+  },
+  {
+    title: "Deposit back before you walk away",
+    body: "Hand back the keys, the vendor does a one-minute check, and the deposit lands on UPI right there.",
+  },
+];
 
 export default function HomePage() {
   // Master Vehicles & Bookings State
@@ -149,9 +159,7 @@ export default function HomePage() {
   }, [vehicles, filter]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-500 selection:text-white">
-      
-      {/* 1. Global Navbar */}
+    <div className="min-h-screen flex flex-col bg-paper text-ink">
       <Navbar
         activeBookingsCount={bookings.length}
         onOpenBookings={() => setShowBookingsModal(true)}
@@ -159,62 +167,26 @@ export default function HomePage() {
         onScrollToSection={handleScrollToSection}
       />
 
-      {/* 2. Hero Search Banner */}
       <HeroSearch
         selectedCategory={filter.category}
         onSelectCategory={(cat) => handleFilterChange({ category: cat })}
         onSearchSubmit={handleHeroSearchSubmit}
       />
 
-      {/* 3. Main Fleet Catalog Section */}
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-18 space-y-12">
-        
-        {/* Section Header */}
-        <section id="catalog" className="scroll-mt-24 space-y-6">
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-24 space-y-28 sm:space-y-32">
+        {/* Fleet */}
+        <section id="catalog" className="scroll-mt-16">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6">
             <div>
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-xs font-black uppercase tracking-wider text-emerald-700 bg-emerald-100/80 px-2.5 py-1 rounded-md">
-                  Verified Fleet
-                </span>
-                <span className="text-xs font-semibold text-slate-500">
-                  Pre-negotiated Student Tariffs
-                </span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">
-                Choose Your Campus Ride
+              <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] text-ink">
+                The fleet
               </h2>
-              <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-xl">
-                All vehicles come sanitized, with full paperwork, campus gate delivery, and zero ID retention.
+              <p className="mt-2 text-muted max-w-lg">
+                Every vehicle is serviced, insured and comes with helmets. Rates are pre-negotiated for IIML students.
               </p>
-            </div>
-
-            {/* Category Quick Chips */}
-            <div className="flex flex-wrap items-center gap-1.5 bg-slate-200/70 p-1.5 rounded-2xl self-start">
-              {(
-                [
-                  { id: "all", label: "All Vehicles" },
-                  { id: "scooter", label: "Scooters" },
-                  { id: "bike", label: "Motorcycles" },
-                  { id: "car", label: "Cars & SUVs" },
-                ] as const
-              ).map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => handleFilterChange({ category: cat.id })}
-                  className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
-                    filter.category === cat.id
-                      ? "bg-white text-slate-900 shadow-sm"
-                      : "text-slate-600 hover:text-slate-900"
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
             </div>
           </div>
 
-          {/* Interactive Filters Bar */}
           <VehicleFilter
             filter={filter}
             onFilterChange={handleFilterChange}
@@ -222,25 +194,19 @@ export default function HomePage() {
             totalCount={filteredVehicles.length}
           />
 
-          {/* Vehicle Grid */}
           {filteredVehicles.length === 0 ? (
-            <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4">
-              <Zap className="w-12 h-12 text-slate-300 mx-auto" />
-              <h3 className="text-lg font-bold text-slate-800">
-                No vehicles matched your selected filters
-              </h3>
-              <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Try resetting your fuel type or transmission filters to view more available vehicles.
-              </p>
+            <div className="py-24 text-center">
+              <p className="text-lg font-medium text-ink">Nothing matches those filters</p>
+              <p className="mt-1 text-sm text-muted">Try a different fuel type or gearbox.</p>
               <button
                 onClick={handleResetFilters}
-                className="px-4 py-2 bg-emerald-600 text-white text-xs font-bold rounded-xl shadow-xs hover:bg-emerald-700 transition-colors cursor-pointer"
+                className="mt-5 h-10 px-5 text-sm font-medium rounded-full border border-ink text-ink hover:bg-ink hover:text-paper transition-colors cursor-pointer"
               >
-                Reset All Filters
+                Clear filters
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+            <div className="pt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-12">
               {filteredVehicles.map((vehicle) => (
                 <VehicleCard
                   key={vehicle.id}
@@ -253,70 +219,37 @@ export default function HomePage() {
           )}
         </section>
 
-        {/* 4. Value Proposition: Why IIML Wheels? */}
-        <section className="bg-gradient-to-br from-slate-900 via-slate-900 to-emerald-950 text-white rounded-3xl p-6 sm:p-10 shadow-xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
-          
-          <div className="relative z-10">
-            <div className="max-w-2xl mb-8">
-              <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-500/20 px-3 py-1 rounded-full border border-emerald-500/30">
-                The Student Mobility Advantage
-              </span>
-              <h3 className="text-2xl sm:text-3xl font-black text-white mt-3 tracking-tight">
-                Why Helions Rent Through IIML Wheels
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 mt-2">
-                We designed this platform specifically to eliminate the friction points students face with unorganized roadside rental operators in Lucknow.
-              </p>
-            </div>
+        {/* Why */}
+        <section className="grid lg:grid-cols-[5fr_7fr] gap-10 lg:gap-16 items-center">
+          <div className="relative aspect-4/5 rounded-3xl overflow-hidden bg-line">
+            <Image
+              src="/photos/ladakh-rider.jpg"
+              alt="A rider with a motorcycle on a mountain ridge in Ladakh"
+              fill
+              sizes="(max-width: 1024px) 100vw, 500px"
+              className="object-cover"
+            />
+          </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-slate-800/50 border border-slate-700/80 rounded-2xl p-5 backdrop-blur-xs">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <h4 className="text-sm font-bold text-white">No Physical ID Holds</h4>
-                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                  Roadside shops keep your original Aadhaar or College ID. We only perform on-screen digital verification.
-                </p>
-              </div>
-
-              <div className="bg-slate-800/50 border border-slate-700/80 rounded-2xl p-5 backdrop-blur-xs">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
-                  <Clock className="w-5 h-5" />
-                </div>
-                <h4 className="text-sm font-bold text-white">Campus Doorstep Drop</h4>
-                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                  Delivery straight to Gate 1, Gate 2, or your Hostel Quad in 15 minutes. No auto rides to outside stands.
-                </p>
-              </div>
-
-              <div className="bg-slate-800/50 border border-slate-700/80 rounded-2xl p-5 backdrop-blur-xs">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
-                  <Award className="w-5 h-5" />
-                </div>
-                <h4 className="text-sm font-bold text-white">2 ISI Helmets Free</h4>
-                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                  Every 2-wheeler rental includes clean, sanitized ISI helmets for rider and pillion at zero extra charge.
-                </p>
-              </div>
-
-              <div className="bg-slate-800/50 border border-slate-700/80 rounded-2xl p-5 backdrop-blur-xs">
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center mb-3">
-                  <Sparkles className="w-5 h-5" />
-                </div>
-                <h4 className="text-sm font-bold text-white">Instant UPI Refunds</h4>
-                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                  Your security deposit is refunded on-spot via UPI as soon as you hand the vehicle back to the partner executive.
-                </p>
-              </div>
-            </div>
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] text-ink max-w-md">
+              Why students skip the roadside rental shop
+            </h2>
+            <ol className="mt-10 divide-y divide-line border-y border-line">
+              {WHY_POINTS.map((p, i) => (
+                <li key={p.title} className="grid grid-cols-[2.5rem_1fr] gap-2 py-6">
+                  <span className="text-sm text-muted tabular-nums pt-0.5">0{i + 1}</span>
+                  <div>
+                    <h3 className="text-lg font-medium text-ink">{p.title}</h3>
+                    <p className="mt-1 text-muted leading-relaxed">{p.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
           </div>
         </section>
 
-        {/* 5. Campus Delivery Guide & Student FAQs */}
         <CampusGuideSection />
-
       </main>
 
       {/* 6. Footer */}

@@ -1,18 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  MapPin,
-  Calendar,
-  Clock,
-  Sparkles,
-  ShieldCheck,
-  CheckCircle2,
-  Bike,
-  Car,
-  Zap,
-  ArrowRight,
-} from "lucide-react";
+import Image from "next/image";
+import { Search } from "lucide-react";
 import { CAMPUS_LOCATIONS, CAMPUS_STATS } from "@/data/mockVehicles";
 import { VehicleCategory, CampusLocation } from "@/types/vehicle";
 
@@ -26,6 +16,49 @@ interface HeroSearchProps {
     pickupTime: string;
   }) => void;
 }
+
+const CATEGORY_OPTIONS: { value: VehicleCategory; label: string }[] = [
+  { value: "all", label: "Anything" },
+  { value: "scooter", label: "Scooter" },
+  { value: "bike", label: "Motorcycle" },
+  { value: "car", label: "Car" },
+];
+
+const PICKUP_OPTIONS = [
+  { value: "Today, 06:00 PM", label: "Today, 6:00 PM" },
+  { value: "Today, 09:00 PM", label: "Today, 9:00 PM" },
+  { value: "Tomorrow, 08:00 AM", label: "Tomorrow, 8:00 AM" },
+  { value: "This Friday, 05:00 PM", label: "Friday, 5:00 PM" },
+  { value: "This Saturday, 07:00 AM", label: "Saturday, 7:00 AM" },
+];
+
+const DURATION_OPTIONS = [
+  { value: "4 Hours", label: "4 hours" },
+  { value: "8 Hours", label: "8 hours" },
+  { value: "24 Hours (Full Day)", label: "1 day" },
+  { value: "48 Hours (Weekend)", label: "2 days" },
+  { value: "72 Hours (3 Days)", label: "3 days" },
+];
+
+function Field({
+  label,
+  children,
+  className = "",
+}: {
+  label: string;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <label className={`flex flex-col gap-0.5 px-5 py-3 min-w-0 ${className}`}>
+      <span className="text-[11px] font-medium text-muted">{label}</span>
+      {children}
+    </label>
+  );
+}
+
+const selectCls =
+  "field-select w-full bg-transparent text-[15px] font-medium text-ink focus:outline-none cursor-pointer truncate";
 
 export default function HeroSearch({
   selectedCategory,
@@ -47,206 +80,116 @@ export default function HeroSearch({
   };
 
   return (
-    <section id="hero" className="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 text-white pt-12 pb-20 lg:pt-16 lg:pb-28">
-      {/* Background Accent Gradients */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.15),transparent_50%)] pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(245,158,11,0.08),transparent_50%)] pointer-events-none" />
-      <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-slate-950 to-transparent pointer-events-none" />
+    <section id="hero" className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6">
+      {/* Photo banner */}
+      <div className="relative h-[460px] sm:h-[520px] rounded-3xl overflow-hidden bg-ink">
+        <Image
+          src="/photos/ladakh-ride.jpg"
+          alt="A Royal Enfield parked on an open mountain road in Ladakh"
+          fill
+          preload
+          sizes="(max-width: 1280px) 100vw, 1280px"
+          className="object-cover object-[60%_55%]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 to-transparent" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Campus Header Tag */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs sm:text-sm font-semibold tracking-wide backdrop-blur-md">
-            <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-            Exclusively for IIM Lucknow Students & Faculty
-          </div>
-          <div className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-800/80 border border-slate-700 text-slate-300 text-xs font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-amber-400" />
-            Zero Security Ransom • Verified Local Vendors
-          </div>
-        </div>
-
-        {/* Main Headline */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-12">
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight text-white mb-5">
-            Campus Mobility, <br className="hidden sm:block" />
-            <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-emerald-200 bg-clip-text text-transparent">
-              Engineered for Helions.
-            </span>
+        <div className="absolute inset-x-0 bottom-0 p-6 sm:p-10 lg:p-12 pb-20 sm:pb-24">
+          <p className="text-sm text-white/80 mb-3">
+            For IIM Lucknow students, faculty &amp; MDP guests
+          </p>
+          <h1 className="max-w-2xl text-4xl sm:text-5xl lg:text-[64px] font-semibold tracking-[-0.03em] leading-[1.02] text-white">
+            Pick a ride. We&apos;ll have it at the gate in 15&nbsp;minutes.
           </h1>
-          <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-            Rent scooters, highway roadsters, and cars with pre-negotiated student tariffs. Handover in 15 minutes at <strong className="text-white">Gate 1, Gate 2, or your Hostel Quad</strong>.
+          <p className="mt-4 max-w-lg text-base sm:text-lg text-white/80 leading-relaxed">
+            Scooters, bikes and cars from verified Lucknow vendors. Student rates, no ID kept, deposit back on UPI.
           </p>
         </div>
-
-        {/* Interactive Search Box */}
-        <div className="max-w-4xl mx-auto bg-white/95 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-4 sm:p-7 shadow-2xl border border-white/20 text-slate-900">
-          
-          {/* Category Tabs */}
-          <div className="flex items-center justify-center sm:justify-start gap-1 sm:gap-2 mb-6 border-b border-slate-100 pb-4 overflow-x-auto">
-            <button
-              type="button"
-              onClick={() => onSelectCategory("all")}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                selectedCategory === "all"
-                  ? "bg-slate-900 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              All Vehicles
-            </button>
-            <button
-              type="button"
-              onClick={() => onSelectCategory("scooter")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                selectedCategory === "scooter"
-                  ? "bg-emerald-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              <Zap className="w-4 h-4" />
-              Scooters (Activa / Ather)
-            </button>
-            <button
-              type="button"
-              onClick={() => onSelectCategory("bike")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                selectedCategory === "bike"
-                  ? "bg-emerald-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              <Bike className="w-4 h-4" />
-              Motorcycles (Hunter / Classic)
-            </button>
-            <button
-              type="button"
-              onClick={() => onSelectCategory("car")}
-              className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all cursor-pointer ${
-                selectedCategory === "car"
-                  ? "bg-emerald-600 text-white shadow-sm"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`}
-            >
-              <Car className="w-4 h-4" />
-              Cars (Swift / Thar)
-            </button>
-          </div>
-
-          {/* Form Controls */}
-          <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-            
-            {/* Campus Drop Location */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1">
-                <MapPin className="w-3.5 h-3.5 text-emerald-600" />
-                Delivery Spot
-              </label>
-              <select
-                value={location}
-                onChange={(e) => setLocation(e.target.value as CampusLocation)}
-                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-              >
-                {CAMPUS_LOCATIONS.map((loc) => (
-                  <option key={loc} value={loc}>
-                    {loc}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* Pickup Date & Time */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1">
-                <Calendar className="w-3.5 h-3.5 text-emerald-600" />
-                Pickup Window
-              </label>
-              <select
-                value={pickupDate}
-                onChange={(e) => setPickupDate(e.target.value)}
-                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-              >
-                <option value="Today, 06:00 PM">Today, 06:00 PM (Evening Run)</option>
-                <option value="Today, 09:00 PM">Today, 09:00 PM (Late Night Drive)</option>
-                <option value="Tomorrow, 08:00 AM">Tomorrow, 08:00 AM (Early Trip)</option>
-                <option value="This Friday, 05:00 PM">This Friday, 05:00 PM (Weekend Getaway)</option>
-                <option value="This Saturday, 07:00 AM">This Saturday, 07:00 AM (Ayodhya Roadtrip)</option>
-              </select>
-            </div>
-
-            {/* Duration Selector */}
-            <div className="space-y-1.5">
-              <label className="text-xs font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-emerald-600" />
-                Duration
-              </label>
-              <select
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                className="w-full h-11 px-3 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
-              >
-                <option value="4 Hours">4 Hours (Quick City Errands)</option>
-                <option value="8 Hours">8 Hours (Full Evening Outing)</option>
-                <option value="24 Hours (Full Day)">24 Hours (1 Full Day)</option>
-                <option value="48 Hours (Weekend)">48 Hours (Full Weekend)</option>
-                <option value="72 Hours (3 Days)">72 Hours (Long Weekend)</option>
-              </select>
-            </div>
-
-            {/* Search Submit CTA */}
-            <div>
-              <button
-                type="submit"
-                className="w-full h-11 flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition-all active:scale-98 cursor-pointer"
-              >
-                <span>Find Vehicles</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
-          </form>
-
-          {/* Quick Micro-USPs */}
-          <div className="mt-5 pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500 font-medium">
-            <span className="flex items-center gap-1.5 text-emerald-700">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              Doorstep Delivery inside Campus Gates
-            </span>
-            <span className="flex items-center gap-1.5 text-slate-700">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              2 Sanitized ISI Helmets with 2-Wheelers
-            </span>
-            <span className="flex items-center gap-1.5 text-slate-700">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-              No Original College ID Retention
-            </span>
-            <span className="flex items-center gap-1.5 text-amber-700 font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              Use Code: IIMLFIRST (₹50 Off)
-            </span>
-          </div>
-
-        </div>
-
-        {/* Campus Metrics Strip */}
-        <div className="mt-14 max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-          {CAMPUS_STATS.map((stat, idx) => (
-            <div
-              key={idx}
-              className="bg-slate-800/40 border border-slate-800 rounded-2xl p-4 backdrop-blur-xs"
-            >
-              <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                {stat.value}
-              </div>
-              <div className="text-xs text-slate-400 font-medium mt-1">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
-
       </div>
+
+      {/* Search bar, overlapping the photo */}
+      <form
+        onSubmit={handleSubmit}
+        className="relative -mt-10 mx-2 sm:mx-6 lg:mx-12 bg-surface rounded-2xl shadow-[0_12px_40px_-12px_rgba(0,0,0,0.25)] border border-line grid grid-cols-2 lg:grid-cols-[1fr_1.4fr_1.1fr_0.9fr_auto] items-center divide-line lg:divide-x"
+      >
+        <Field label="Vehicle" className="border-b border-r lg:border-0 border-line">
+          <select
+            value={selectedCategory}
+            onChange={(e) => onSelectCategory(e.target.value as VehicleCategory)}
+            className={selectCls}
+          >
+            {CATEGORY_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field label="Pickup point" className="border-b lg:border-0 border-line">
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value as CampusLocation)}
+            className={selectCls}
+          >
+            {CAMPUS_LOCATIONS.map((loc) => (
+              <option key={loc} value={loc}>
+                {loc}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field label="When" className="border-r lg:border-0 border-line">
+          <select
+            value={pickupDate}
+            onChange={(e) => setPickupDate(e.target.value)}
+            className={selectCls}
+          >
+            {PICKUP_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <Field label="For">
+          <select
+            value={duration}
+            onChange={(e) => setDuration(e.target.value)}
+            className={selectCls}
+          >
+            {DURATION_OPTIONS.map((o) => (
+              <option key={o.value} value={o.value}>
+                {o.label}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        <div className="col-span-2 lg:col-span-1 p-2 border-t lg:border-0 border-line">
+          <button
+            type="submit"
+            className="w-full lg:w-auto h-12 px-6 inline-flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white text-[15px] font-medium rounded-xl transition-colors cursor-pointer"
+          >
+            <Search className="w-4 h-4" strokeWidth={2.25} />
+            Search
+          </button>
+        </div>
+      </form>
+
+      {/* Proof points */}
+      <dl className="mt-8 sm:mt-10 grid grid-cols-2 md:grid-cols-4 gap-y-5 md:divide-x divide-line">
+        {CAMPUS_STATS.map((stat) => (
+          <div key={stat.label} className="md:px-8 first:md:pl-0">
+            <dt className="text-[13px] text-muted">{stat.label}</dt>
+            <dd className="text-2xl font-semibold tracking-tight text-ink tabular-nums">
+              {stat.value}
+            </dd>
+          </div>
+        ))}
+      </dl>
     </section>
   );
 }

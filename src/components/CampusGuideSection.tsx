@@ -1,16 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  MapPin,
-  Clock,
-  Compass,
-  ChevronDown,
-  HelpCircle,
-  ShieldCheck,
-  Building,
-  Navigation,
-} from "lucide-react";
+import { Plus } from "lucide-react";
 import { POPULAR_ROUTES, CAMPUS_LOCATIONS } from "@/data/mockVehicles";
 
 const FAQS = [
@@ -20,7 +11,7 @@ const FAQS = [
   },
   {
     q: "Do I have to surrender my original college ID card?",
-    a: "NO! Unlike shady roadside rental shops, IIML Wheels has strict vendor partner agreements. The vendor will only digitally verify your IIML Roll Number and Driving License on-screen. Your physical cards remain in your wallet.",
+    a: "No. IIML Wheels has strict vendor partner agreements. The vendor will only digitally verify your IIML Roll Number and Driving License on-screen. Your physical cards remain in your wallet.",
   },
   {
     q: "When and how is my security deposit refunded?",
@@ -28,7 +19,7 @@ const FAQS = [
   },
   {
     q: "What is the fuel policy?",
-    a: "Fair Fuel Policy: The vehicle comes with fuel (typically half to full tank). Simply return it with roughly the same fuel level. Alternatively, for electric vehicles (like Ather 450X), charging is completely free at designated campus points!",
+    a: "Fair Fuel Policy: The vehicle comes with fuel (typically half to full tank). Simply return it with roughly the same fuel level. Alternatively, for electric vehicles (like the Bajaj Chetak), charging is completely free at designated campus points!",
   },
   {
     q: "Can we take the vehicle outside Lucknow (e.g. Ayodhya or Dudhwa)?",
@@ -36,145 +27,108 @@ const FAQS = [
   },
 ];
 
+const PICKUP_NOTES = [
+  "Closest to IIM Road and the Sitapur Road highway.",
+  "Handy if you live in the residential wings.",
+  "Right outside the mess. Easiest for loading up on weekends.",
+  "For MDP participants, guests and visiting alumni.",
+];
+
+function SectionHeading({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="mb-10 max-w-xl">
+      <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] text-ink">{title}</h2>
+      <p className="mt-2 text-muted">{subtitle}</p>
+    </div>
+  );
+}
+
 export default function CampusGuideSection() {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="space-y-16">
-      
-      {/* Section 1: Campus Delivery Hubs */}
+    <div className="space-y-28 sm:space-y-32">
+      {/* Pickup points */}
       <section id="campus-delivery" className="scroll-mt-24">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-            Campus Logistics
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-3 tracking-tight">
-            15-Minute Handover at 4 Campus Points
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-2">
-            No walking to outside taxi stands or auto ranks. The vendor brings the vehicle right inside or at the gate.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <SectionHeading
+          title="Four pickup points on campus"
+          subtitle="The vendor brings the vehicle to you, usually within 15 minutes of your slot."
+        />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 border-t border-line">
           {CAMPUS_LOCATIONS.map((loc, idx) => (
             <div
-              key={idx}
-              className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-2xs hover:shadow-md transition-shadow relative overflow-hidden group"
+              key={loc}
+              className="py-6 sm:pr-6 border-b border-line lg:border-b-0 lg:[&:not(:first-child)]:pl-6 lg:[&:not(:last-child)]:border-r"
             >
-              <div className="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-black text-sm mb-3 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
-                0{idx + 1}
-              </div>
-              <h4 className="text-sm font-bold text-slate-900 leading-snug">
-                {loc}
-              </h4>
-              <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                {idx === 0 && "Ideal for highway access & Sitapur road connectivity."}
-                {idx === 1 && "Convenient for students staying near residential wings."}
-                {idx === 2 && "Doorstep drop right outside hostel messes for quick weekend loading."}
-                {idx === 3 && "Convenient for visiting MDP executives, guests & alumni."}
-              </p>
-              <div className="mt-4 pt-3 border-t border-slate-100 flex items-center gap-1 text-[11px] font-semibold text-emerald-700">
-                <Clock className="w-3.5 h-3.5" />
-                <span>15 Min Avg Arrival</span>
-              </div>
+              <span className="text-sm text-muted tabular-nums">0{idx + 1}</span>
+              <h3 className="mt-3 text-lg font-medium text-ink leading-snug">{loc}</h3>
+              <p className="mt-2 text-sm text-muted leading-relaxed">{PICKUP_NOTES[idx]}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Section 2: Popular Student Weekend Routes */}
+      {/* Trips */}
       <section id="weekend-routes" className="scroll-mt-24">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-            Roadtrip Inspiration
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-3 tracking-tight">
-            Popular Helion Riding Destinations
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-2">
-            Distance and drive times measured directly from IIM Lucknow Prabandh Nagar campus.
+        <SectionHeading
+          title="Where students ride"
+          subtitle="Distances and drive times from the Prabandh Nagar campus."
+        />
+        <ul className="border-t border-line">
+          {POPULAR_ROUTES.map((route) => (
+            <li
+              key={route.destination}
+              className="grid grid-cols-[1fr_auto] sm:grid-cols-[1.2fr_2fr_auto] gap-x-6 gap-y-1 py-5 border-b border-line items-baseline"
+            >
+              <h3 className="text-lg font-medium text-ink">{route.destination}</h3>
+              <p className="col-span-2 sm:col-span-1 row-start-2 sm:row-start-auto text-sm text-muted">{route.tip}</p>
+              <p className="text-right text-ink tabular-nums whitespace-nowrap">
+                {route.distance}
+                <span className="text-muted"> · {route.time}</span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* FAQ */}
+      <section id="faqs" className="scroll-mt-24 grid lg:grid-cols-[1fr_2fr] gap-10">
+        <div>
+          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.025em] text-ink">Questions</h2>
+          <p className="mt-2 text-muted">
+            Anything else? Call the Gate 1 desk on{" "}
+            <a href="tel:+919838012345" className="text-ink underline underline-offset-4 decoration-line hover:decoration-ink">
+              +91 98380 12345
+            </a>
+            .
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {POPULAR_ROUTES.map((route, idx) => (
-            <div
-              key={idx}
-              className="bg-white border border-slate-200/90 rounded-2xl p-5 shadow-2xs hover:border-emerald-400 transition-colors flex flex-col justify-between"
-            >
-              <div>
-                <div className="flex items-center justify-between text-xs text-emerald-700 font-bold mb-2">
-                  <span className="flex items-center gap-1">
-                    <Navigation className="w-3.5 h-3.5" />
-                    {route.distance}
-                  </span>
-                  <span className="flex items-center gap-1 text-slate-500">
-                    <Clock className="w-3.5 h-3.5" />
-                    {route.time}
-                  </span>
-                </div>
-                <h4 className="text-sm font-black text-slate-900">
-                  {route.destination}
-                </h4>
-                <p className="text-xs text-slate-500 mt-2 leading-relaxed">
-                  {route.tip}
-                </p>
-              </div>
-
-              <div className="mt-4 pt-3 border-t border-slate-100 text-[11px] font-semibold text-slate-400">
-                Fastag & GPS Ready Fleet
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Section 3: Student FAQs */}
-      <section id="faqs" className="scroll-mt-24 max-w-3xl mx-auto">
-        <div className="text-center mb-8">
-          <span className="text-xs font-extrabold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
-            Got Questions?
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-3 tracking-tight">
-            Frequently Asked Questions
-          </h2>
-        </div>
-
-        <div className="space-y-3">
+        <div className="border-t border-line">
           {FAQS.map((faq, idx) => {
             const isOpen = openFaq === idx;
             return (
-              <div
-                key={idx}
-                className="bg-white border border-slate-200/90 rounded-2xl overflow-hidden transition-all shadow-2xs"
-              >
+              <div key={faq.q} className="border-b border-line">
                 <button
                   type="button"
                   onClick={() => setOpenFaq(isOpen ? null : idx)}
-                  className="w-full p-4 sm:p-5 text-left flex items-center justify-between gap-4 font-bold text-sm text-slate-900 hover:text-emerald-700 transition-colors cursor-pointer"
+                  aria-expanded={isOpen}
+                  className="w-full py-5 text-left flex items-center justify-between gap-6 text-[17px] font-medium text-ink cursor-pointer"
                 >
-                  <span className="flex items-center gap-2">
-                    <HelpCircle className="w-4 h-4 text-emerald-600 shrink-0" />
-                    {faq.q}
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 text-slate-400 shrink-0 transition-transform ${
-                      isOpen ? "rotate-180" : ""
-                    }`}
+                  {faq.q}
+                  <Plus
+                    className={`w-5 h-5 shrink-0 text-muted transition-transform duration-200 ${isOpen ? "rotate-45" : ""}`}
+                    strokeWidth={1.75}
                   />
                 </button>
                 {isOpen && (
-                  <div className="px-4 pb-4 sm:px-5 sm:pb-5 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
-                    {faq.a}
-                  </div>
+                  <p className="pb-6 pr-10 text-muted leading-relaxed">{faq.a}</p>
                 )}
               </div>
             );
           })}
         </div>
       </section>
-
     </div>
   );
 }
